@@ -37,7 +37,7 @@ def courses_from_file(f: str) -> list[Course]:
     return courses_from_fd(f)
 
 def courses_from_stdin() -> list[Course]:
-  """almost the same function as `credits_from_file` except reading from stdin
+  """almost the same function as `courses_from_file` except reading from stdin
 
   Returns:
       list[Course]: a list of Course
