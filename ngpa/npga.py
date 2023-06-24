@@ -1,18 +1,18 @@
 from io import TextIOWrapper
 
 
-class Credit:
-  def __init__(self, name: str, score: float, grade: float) -> None:
+class Course:
+  def __init__(self, name: str, score: float, credit: float) -> None:
     self.name = name
     self.score = score
-    self.grade = grade
+    self.credit = credit
 
   @property
-  def score_grade(self) -> float:
-    return self.score * self.grade
+  def score_credit(self) -> float:
+    return self.score * self.credit
 
   def __eq__(self, __value: object) -> bool:
-    if (not isinstance(__value, Credit)):
+    if (not isinstance(__value, Course)):
       return False
     return self.name == __value.name
 
@@ -20,35 +20,40 @@ class Credit:
     return not self.__eq__(__value)
 
 
-def credits_from_file(f: str) -> list[Credit]:
-  """takes filepath and returns a list of Credit
+def credits_from_file(f: str) -> list[Course]:
+  """takes filepath and returns a list of Course
 
   Args:
       f (str): filepath
+      
+  FileFormat:
+    file format is simple. each line consists of two or three words and will be used to initialize a 
+    Course object. if one line has two words, then the first should be you score and the second should be 
+    the credit of this course.
 
   Returns:
-      list[Credit]: a list of Credits
+      list[Course]: a list of Course
   """
   with open(f, mode='r', encoding='utf-8'):
     return credits_from_fd(f)
 
-def credits_from_stdin() -> list[Credit]:
+def credits_from_stdin() -> list[Course]:
   """almost the same function as `credits_from_file` except reading from stdin
 
   Returns:
-      list[Credit]: a list of Credit
+      list[Course]: a list of Course
   """
   from sys import stdin
   return credits_from_fd(stdin)
 
-def credits_from_fd(f: TextIOWrapper) -> list[Credit]:
-  """helper function, takes a TextIOWrapper and returns a list of Credit
+def credits_from_fd(f: TextIOWrapper) -> list[Course]:
+  """helper function, takes a TextIOWrapper and returns a list of Course
 
   Args:
       f (TextIOWrapper): a TextIOWrapper, eg. an opened file or stdin/stderr
 
   Returns:
-      list[Credit]: a list of Credit
+      list[Course]: a list of Course
   """
   credits = []
   lines = f.readlines()
@@ -57,19 +62,19 @@ def credits_from_fd(f: TextIOWrapper) -> list[Credit]:
     if (len(component) == 2):
       component = ['_'] + component[:]
     assert len(component) == 3, "invalid format"
-    credits.append(Credit(component[0], float(
+    credits.append(Course(component[0], float(
       component[1]), float(component[2])))
   return credits
 
 
-def credits_from_list(l: list) -> list[Credit]:
-  """another helper function, makes a list of Credit from a list of iterable
+def credits_from_list(l: list) -> list[Course]:
+  """another helper function, makes a list of Course from a list of iterable
 
   Args:
       l (list): a list of tuple with length at least 2
 
   Returns:
-      list[Credit]: a list of Credit
+      list[Course]: a list of Course
   """
   credits = []
   for i in l:
@@ -79,28 +84,28 @@ def credits_from_list(l: list) -> list[Credit]:
       score, grade = i
     else:
       name, score, grade = i
-    credits.append(Credit(name, score, grade))
+    credits.append(Course(name, score, grade))
   return credits
 
 
-def gpa(gpa_list: list[Credit]) -> float:
-  """takes a list of Credit and reduce it to final gpa. only works with Nanjing University
+def gpa(gpa_list: list[Course]) -> float:
+  """takes a list of Course and reduce it to final gpa. only works with Nanjing University
 
   Args:
-      gpa_list (list[Credit]): a list of Credit
+      gpa_list (list[Course]): a list of Course
 
   Returns:
       float: gpa
   """
-  return (sum([g.score_grade for g in gpa_list])) / (sum([g.grade for g in gpa_list])) / 20
+  return (sum([g.score_credit for g in gpa_list])) / (sum([g.credit for g in gpa_list])) / 20
 
 
-def merge_gpa(list1: list[Credit], list2: list[Credit]) -> float:
-  """merge two list of Credit and calculate the final gpa
+def merge_gpa(list1: list[Course], list2: list[Course]) -> float:
+  """merge two list of Course and calculate the final gpa
 
   Args:
-      list1 (list[Credit]): list1
-      list2 (list[Credit]): list2
+      list1 (list[Course]): list1
+      list2 (list[Course]): list2
 
   Returns:
       float: gpa
@@ -108,5 +113,5 @@ def merge_gpa(list1: list[Credit], list2: list[Credit]) -> float:
   return gpa(list1 + list2)
 
 
-def exclude_from(gpa_list: list[Credit], exclude_list: list[Credit]) -> float:
+def exclude_from(gpa_list: list[Course], exclude_list: list[Course]) -> float:
   return gpa(gpa_list=list(filter(lambda a: a not in exclude_list, gpa_list)))
