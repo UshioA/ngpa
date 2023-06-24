@@ -15,3 +15,7 @@ classifiers = [
     "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
 ]
 keywords = ["NJU", "gpa"]
+
+[project.urls]
+"Homepage" = "https://github.com/UshioA/ngpa"
+"Bug Track" = "https://github.com/UshioA/ngpa/issues"

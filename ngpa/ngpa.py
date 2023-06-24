@@ -1,6 +1,5 @@
 from io import TextIOWrapper
 
-
 class Course:
   def __init__(self, name: str, score: float, credit: float) -> None:
     self.name = name
@@ -20,7 +19,7 @@ class Course:
     return not self.__eq__(__value)
 
 
-def credits_from_file(f: str) -> list[Course]:
+def courses_from_file(f: str) -> list[Course]:
   """takes filepath and returns a list of Course
 
   Args:
@@ -35,18 +34,18 @@ def credits_from_file(f: str) -> list[Course]:
       list[Course]: a list of Course
   """
   with open(f, mode='r', encoding='utf-8'):
-    return credits_from_fd(f)
+    return courses_from_fd(f)
 
-def credits_from_stdin() -> list[Course]:
+def courses_from_stdin() -> list[Course]:
   """almost the same function as `credits_from_file` except reading from stdin
 
   Returns:
       list[Course]: a list of Course
   """
   from sys import stdin
-  return credits_from_fd(stdin)
+  return courses_from_fd(stdin)
 
-def credits_from_fd(f: TextIOWrapper) -> list[Course]:
+def courses_from_fd(f: TextIOWrapper) -> list[Course]:
   """helper function, takes a TextIOWrapper and returns a list of Course
 
   Args:
@@ -67,7 +66,7 @@ def credits_from_fd(f: TextIOWrapper) -> list[Course]:
   return credits
 
 
-def credits_from_list(l: list) -> list[Course]:
+def courses_from_list(l: list) -> list[Course]:
   """another helper function, makes a list of Course from a list of iterable
 
   Args:
@@ -114,4 +113,13 @@ def merge_gpa(list1: list[Course], list2: list[Course]) -> float:
 
 
 def exclude_from(gpa_list: list[Course], exclude_list: list[Course]) -> float:
+  """filter out some courses from gpa_list
+
+  Args:
+      gpa_list (list[Course]): gpa_list
+      exclude_list (list[Course]): courses needs to be filtered out
+
+  Returns:
+      float: gpa
+  """
   return gpa(gpa_list=list(filter(lambda a: a not in exclude_list, gpa_list)))
