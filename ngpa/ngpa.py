@@ -33,8 +33,8 @@ def courses_from_file(f: str) -> list[Course]:
   Returns:
       list[Course]: a list of Course
   """
-  with open(f, mode='r', encoding='utf-8'):
-    return courses_from_fd(f)
+  with open(f, mode='r', encoding='utf-8') as file:
+    return courses_from_fd(file)
 
 def courses_from_stdin() -> list[Course]:
   """almost the same function as `courses_from_file` except reading from stdin
