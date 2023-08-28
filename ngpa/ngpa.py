@@ -4,7 +4,7 @@ import argparse
 
 def main():
   parser = argparse.ArgumentParser(
-    prog='NJU GPA Calculator', description='''
+    prog='ngpa', description='''
     prepare your gpa in file(s), and calculate them. 
     format: course_name, score, credit
     ''')
