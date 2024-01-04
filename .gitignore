@@ -1,4 +1,5 @@
 dist
+test
 tests
 __pycache__
 .vscode

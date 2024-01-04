@@ -1,6 +1,28 @@
 from io import TextIOWrapper
 
 
+def map_from(n: float) -> float:
+  if 90 <= n <= 100:
+    return 4.0
+  elif 85 <= n <= 89:
+    return 3.7
+  elif 82 <= n <= 84:
+    return 3.3
+  elif 78 <= n <= 81:
+    return 3.0
+  elif 75 <= n <= 77:
+    return 2.7
+  elif 72 <= n <= 74:
+    return 2.3
+  elif 68 <= n <= 71:
+    return 2.0
+  elif 64 <= n <= 67:
+    return 1.5
+  elif 60 <= n <= 63:
+    return 1.0
+  return 0
+
+
 class Course:
   def __init__(self, name: str, score: float, credit: float) -> None:
     self.name = name
@@ -69,7 +91,7 @@ def courses_from_fd(f: TextIOWrapper) -> list[Course]:
       component = ['_'] + component[:]
     assert len(component) == 3, "invalid format"
     credits.append(Course(component[0], float(
-      component[1]), float(component[2])))
+        component[1]), float(component[2])))
   return credits
 
 
@@ -108,6 +130,20 @@ def gpa(gpa_list: list[Course]) -> float:
   return (sum([g.score_credit for g in gpa_list])) / (sum([g.credit for g in gpa_list])) / 20
 
 
+def gpa_run(gpa_list: list[Course]) -> float:
+  """takes a list of Course and reduce it to final gpa(run). only works with Nanjing University
+
+  Args:
+      gpa_list (list[Course]): a list of Course
+
+  Returns:
+      float: gpa for running
+  """
+  if not gpa_list:
+    return 0
+  return (sum(map(lambda x: map_from(x.score) * x.credit, gpa_list))) / (sum(map(lambda x: x.credit, gpa_list)))
+
+
 def merge_gpa(list1: list[Course], list2: list[Course]) -> float:
   """merge two list of Course and calculate the final gpa
 
@@ -121,7 +157,7 @@ def merge_gpa(list1: list[Course], list2: list[Course]) -> float:
   return gpa(list1 + list2)
 
 
-def exclude_from(gpa_list: list[Course], exclude_list: list[Course]) -> float:
+def exclude_from(gpa_list: list[Course], exclude_list: list[Course], run=False) -> float:
   """filter out some courses from gpa_list
 
   Args:
@@ -131,4 +167,4 @@ def exclude_from(gpa_list: list[Course], exclude_list: list[Course]) -> float:
   Returns:
       float: gpa
   """
-  return gpa(gpa_list=list(filter(lambda a: a not in exclude_list, gpa_list)))
+  return gpa(gpa_list=list(filter(lambda a: a not in exclude_list, gpa_list))) if not run else (gpa_run(gpa_list=list(filter(lambda a: a not in exclude_list, gpa_list))))

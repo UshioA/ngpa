@@ -1,4 +1,4 @@
-from .lib import *
+from lib import *
 import argparse
 
 
@@ -8,6 +8,7 @@ def main():
     prepare your gpa in file(s), and calculate them. 
     format: course_name, score, credit
     ''')
+  parser.add_argument("-r", "--run", help="want to run?", action='store_true', required=False)
   parser.add_argument("-e", "--exclude", action='extend',
                       nargs='+', type=str, required=False, help='a list of gpa files you want to exclude from calculating', default=[])
   parser.add_argument('filelist', action='extend',
@@ -18,7 +19,7 @@ def main():
   if not exclude and not filelist:
     parser.print_help()
     return
-  print(exclude_from(filelist, exclude))
+  print(exclude_from(filelist, exclude, args.run))
 
 
 if __name__ == '__main__':
