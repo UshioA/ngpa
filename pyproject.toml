@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 [project]
 name = "ngpa"
-version = "0.0.5"
+version = "0.0.6"
 authors = [{ name = 'DingZhen', email = "realdingzhen@outlook.com" }]
 description = "Some handy functions for computing NJU gpa"
 requires-python = ">=3.6"
